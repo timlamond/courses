@@ -160,6 +160,105 @@ include $_SERVER["DOCUMENT_ROOT"] . "/includes/header.php";
         </pre>
       </aside>
     </article>
+
+    <article class="module">
+      <h5>Navigation - Using the Comand Line</h5>
+      <section>
+        <h6>ls</h6>
+        <ul>
+          <li>
+            <code>$</code> = shell prompt
+          </li>
+          <li>
+            <code>ls</code> <em>lists</em> the files and directories of the directory you are currently in.
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h6>pwd</h6>
+        <ul>
+          <li>
+            <code>pwd</code> = print working directory
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h6>clear</h6>
+        <ul>
+          <li>
+            <code>clear</code> = clears the terminal of any text
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h6>cd</h6>
+        <ul>
+          <li>
+            <code>cd</code> = change directory
+          </li>
+          <li>
+            navigate to a specific child directory using <code>cd folder1/folder2</code>
+          </li>
+          <li>
+            navigate up 1 directory using <code>cd ..</code>; this would take you from <code>folder1/folder2</code>, up to <code>folder1/</code>
+          </li>
+          <li>
+            navigate up 2 directories using <code>cd ../../</code>; go further with additional <code>../</code>, just like you would in markup.
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h6>mkdir</h6>
+        <ul>
+          <li>
+            <code>mkdir</code> = make directory - creates a new directory named whatever argument you pass it, in the current working directory; ie <code>mkdir media</code>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h6>touch</h6>
+        <ul>
+          <li>
+            <code>touch</code> = create new file within current working directory, taking file name as it's argument; ie <code>touch keyboard.txt</code>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h6>echo</h6>
+        <ul>
+          <li>
+            <code>echo</code> = add content to a file; ie <code>echo "Hello there" >> test.txt</code>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h6>cat</h6>
+        <ul>
+          <li>
+            <code>cat</code> = print contest of a file in the terminal
+          </li>
+        </ul>
+      </section>
+    </article>
+
+    <article class="module">
+      <h5>Setting Up Your Command Line</h5>
+
+      <section>
+        <h6>What is Bash?</h6>
+        <ul>
+          <li>
+            <strong>B</strong>ourne-<strong>A</strong>gain <strong>SH</strong>ell is an open source "shell"; a shell is a specific kind of Comand Line Interface (CLI)
+          </li>
+          <li>
+            Bash is the default shell for Linux and Mac
+          </li>
+          <li>
+            Everything from the previous module is Bash
+          </li>
+        </ul>
+      </section>
+    </article>
   </article>
 </main>
 
