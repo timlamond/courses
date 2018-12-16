@@ -329,6 +329,98 @@ include $_SERVER["DOCUMENT_ROOT"] . "/includes/header.php";
       </ul>
     </section>
   </article>
+
+  <article class="module">
+    <h5>Arrays</h5>
+
+    <section>
+      <h6>Create an Array</h6>
+      <ul>
+        <li>
+          <em>Array Literal</em>: defined by wrapping items in square brackets
+          <code>
+            let arrayLiteral = ['item1', 2, true];
+          </code>
+        </li>
+      </ul>
+    </section>
+    <section>
+      <h6>Arrays with let and const</h6>
+      <ul>
+        <li>
+          <code>const</code>: elements of arrays declared with const are still mutable, but you cannot assign a new/differnt array or value to the variable
+        </li>
+      </ul>
+    </section>
+    <section>
+      <h6>The .push() Method</h6>
+      <ul>
+        <li>Allows you to <strong>add items to the end</strong> of an array</li>
+        <li>Mutates the original array</li>
+      </ul>
+    </section>
+    <section>
+      <h6>The .pop() Method</h6>
+      <ul>
+        <li>Allows you to <strong>remove the last item</strong> of an array</li>
+        <li>Returns the value of the removed item, which can be stored in a variable</li>
+        <li>Mutates the original array</li>
+      </ul>
+    </section>
+    <section>
+      <h6>The .shift() Method</h6>
+      <ul>
+        <li>Allows you to <strong>remove the first item</strong> from an array</li>
+      </ul>
+    </section>
+    <section>
+      <h6>The .unshift() Method</h6>
+      <ul>
+        <li>Allows you to <strong>add a new item to the beginning</strong> of an array</li>
+      </ul>
+    </section>
+    <section>
+      <h6>The .slice() Method</h6>
+      <ul>
+        <li>Allows you to <strong>grab a section of elements</strong> from an array</li>
+        <li>Non-mutating function, meaning the orignal array stays intact</li>
+      </ul>
+    </section>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Additional Array Documentation</a>
+
+    <aside class="project">
+      <h6>Secret Message</h6>
+      <pre>
+        <code>
+          let secretMessage = ['Learning', 'is', 'not', 'about', 'what', 'you', 'get', 'easily', 'the', 'first', 'time,', 'it', 'is', 'about', 'what', 'you', 'can', 'figure', 'out.', '-2015,', 'Chris', 'Pine,', 'Learn', 'JavaScript'];
+
+          console.log(secretMessage.length);
+          secretMessage.pop();
+          console.log(secretMessage.length);
+
+          secretMessage.push('to', 'Program');
+          console.log(secretMessage.indexOf('easily'));
+          secretMessage[7] = 'right';
+          secretMessage.shift();
+          secretMessage.unshift('Programming');
+
+          console.log(secretMessage.indexOf('get'));
+          secretMessage.splice(6, 5, 'know');
+
+          console.log(secretMessage.join(' '));
+
+          //Output:
+          //24
+          //23
+          //7
+          //6
+          //Programming is not about what you know it is about what you can figure out. -2015, Chris Pine, Learn to Program
+        </code>
+      </pre>
+    </aside>
+  </article>
+  </article>
+
 </article>
 </main>
 
