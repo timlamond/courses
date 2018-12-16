@@ -260,6 +260,76 @@ include $_SERVER["DOCUMENT_ROOT"] . "/includes/header.php";
       </section>
     </article>
   </article>
+
+  <article class="module">
+    <h5>Functions</h5>
+
+    <section>
+      <h6>Arrow Functions</h6>
+      <ul>
+        <li>
+          A newer alternative for declaring functions:
+          <pre>
+            <code>
+              const functionName = function(arg1, arg2){
+
+              };
+            </code>
+          </pre>
+          becomes,
+          <pre>
+            <code>
+              const functionName = (arg1, arg2) => {
+
+              };
+            </code>
+          </pre>
+        </li>
+        <li>
+          <strong>Concise body</strong>
+          <ul>
+            <li>
+              <strong>Zero parameters: requiers parentheses</strong>
+              <code>const functionName = () => {};</code>
+            </li>
+            <li>
+              <strong>One Parameter: does not requier parentheses</strong>
+              <code>const functionName = paramOne => {};</code>
+            </li>
+            <li>
+              <strong>Two or More Parameters: requiers parentheses</strong>
+              <code>const functionName = (paramOne, paramTwo) => {};</code>
+            </li>
+            <li>
+              <strong>
+                Single-line block: doesn't require curly brackets; will automatically evaluate and return value, without use of <code>return</code>; known as <em>implicit return</em>
+              </strong>
+              <code>const sumNumbers = number => number + number;</code>
+              equivalent to:
+              <code>
+                const sumNumbers = number =>{
+                  const sum = number + number;
+                  return sum;
+                };
+              </code>
+              another example:
+              <code>
+                const plantNeedsWater = (day) => {
+                  return day === 'Wednesday' ? true : false;
+                };
+              </code>
+              becomes:
+              <code>
+                const plantNeedsWater = day => day === 'Wednesday' ? true : false;
+              </code>
+            </li>
+          </ul>
+        </li>
+
+      </ul>
+    </section>
+  </article>
+</article>
 </main>
 
 <?php
