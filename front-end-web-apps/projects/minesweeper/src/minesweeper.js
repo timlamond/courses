@@ -1,13 +1,20 @@
-//Run node minesweeper.js in terminal to run this code.
-const blankLine = ' | | ';
-console.log('This is what an empty board would look like:');
-console.log(blankLine);
-console.log(blankLine);
-console.log(blankLine);
+const printBoard = board => {
+  //Log 'Current Board'
+  console.log('Current Board:');
+  //Log the first element of board
+  //Add a | separator between each element of board[0]
+  console.log(board[0].join(' | '));
+  //repeat this for elements 2 and 3 ofo board
+  console.log(board[1].join(' | '));
+  console.log(board[2].join(' | '));
+};
 
-const guessLine = '1| | ';
-const bombLine = ' |B| ';
-console.log('This is what a board with a guess and a bomb on it would look like:');
-console.log(guessLine);
-console.log(bombLine);
-console.log(blankLine);
+let board = [
+  [' ', ' ', ' '],
+  [' ', ' ', ' '],
+  [' ', ' ', ' ']
+];
+printBoard(board);
+board[0][1] = '1';
+board[2][2] = 'B';
+printBoard(board);
