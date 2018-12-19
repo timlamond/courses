@@ -419,6 +419,91 @@ include $_SERVER["DOCUMENT_ROOT"] . "/includes/header.php";
       </pre>
     </aside>
   </article>
+
+  <article class="module">
+    <h4>Loops</h4>
+
+    <section>
+      <h5>while loops</h5>
+      <p>Use a while when you don't know how many times a loop will need to run.</p>
+      <aside class="example">
+        <pre>
+          <code>
+            const cards = ['diamond', 'spade', 'heart', 'club'];
+
+            let currentCard;
+            while(currentCard != 'spade'){
+              currentCard = cards[Math.floor(Math.random() * 4)];
+              console.log(currentCard);
+            }
+          </code>
+        </pre>
+      </aside>
+    </section>
+    <section>
+      <h5>do...while</h5>
+      <p>do a task once (no matter what), and then keep doing it until a specified condition is no longer me.</p>
+      <aside class="example">
+        <pre>
+          <code>
+            let cupsOfSugarNeeded = 2;
+            let cupsAdded = 0;
+
+            //by default, add 1 cup, then add 1 cup at a time until cupsAdded === cupsOfSugarNeeded
+            do{
+              cupsAdded++;
+            } while(cupsAdded < cupsOfSugarNeeded);
+          </code>
+        </pre>
+      </aside>
+    </section>
+
+    <section>
+      <h5>The break keyword</h5>
+      <p>The break keyword allows programs to “break” out of the loop from within the loop's block.</p>
+      <aside class="example">
+        <pre>
+          <code>
+            const rapperArray = ["Lil' Kim", "Jay-Z", "Notorious B.I.G.", "Tupac"];
+
+            for(let rapperArrayIndex = 0; rapperArrayIndex < rapperArray.length; rapperArrayIndex++){
+              console.log(rapperArray[rapperArrayIndex]);
+              if(rapperArray[rapperArrayIndex] === 'Notorious B.I.G.'){
+                break;
+              }
+            }
+            console.log("And if you don't know, now you know.");
+          </code>
+        </pre>
+      </aside>
+    </section>
+
+    <aside class="project">
+      <h6>Whale Talk</h6>
+      <pre>
+        <code>
+          let input = "For whom the bell tolls. Time marches on.";
+          const vowels = ["A", "E", "I", "O", "U", "a", "e", "i", "o", "u"];
+          let resultArray = [];
+
+          for(let i = 0; i < input.length; i++){
+            //console.log(i);
+            for(let v = 0; v < vowels.length; v++){
+              //console.log(v);
+              if(input[i] === vowels[v]){
+                resultArray.push(input[i]);
+              }
+            }
+            if(input[i] === "e" || input[i] === "u"){
+              resultArray.push(input[i]);
+            }
+          }
+
+          let whaleTalk = resultArray.join("").toUpperCase();
+          console.log(whaleTalk);
+        </code>
+      </pre>
+    </aside>
   </article>
 
 </article>
