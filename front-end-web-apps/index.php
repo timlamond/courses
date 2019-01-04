@@ -506,6 +506,361 @@ include $_SERVER["DOCUMENT_ROOT"] . "/includes/header.php";
     </aside>
   </article>
 
+  <article class="module">
+    <h5>Higher-Order Functions</h5>
+    <p>Functions that accept other functions as arguments and/or return functions as output.</p>
+    <p>Allows us to build abstractions onto other abstractions.</p>
+    <p>
+      An abstraction is a simplifying of events into ideas. i.e. "I baked a cake." is an abstraction of the many events required to make a cake that can be understood without explicitly detailing them.
+    </p>
+    <p>The more abstraction in our code, the more modular and easy to read it can become.</p>
+
+    <section>
+      <h6>Functions as Data</h6>
+      <p>
+        Functions can be used as the value of new variables, which then allows the new variable to be invokes as if it were the original function. This can help simplify function calls.
+      </p>
+      <pre>
+        <code>
+          const checkThatTwoPlusTwoEqualsFourAMillionTimes = () => {
+            for(let i = 1; i <= 1000000; i++) {
+              if ( (2 + 2) != 4) {
+                console.log('Something has gone very wrong :( ');
+              }
+            }
+          }
+
+          // Write your code below
+          const is2p2 = checkThatTwoPlusTwoEqualsFourAMillionTimes;
+          is2p2();
+          //log the name of the original function assigned to is2p2
+          console.log(is2p2.name);
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>Functions as Parameters</h6>
+      <p>
+        Functions can be passed into other functions as parameters, allowing them to be used as callback function
+      </p>
+      <p>They are passed without their parentheses, to ensure they are not evaluated until we ask them to be</p>
+      <pre>
+        <code>
+          //define a single parameter function
+          const timeFuncRuntime = funcParameter => {
+            //run some code
+             let t1 = Date.now();
+             //invoke the parameter name as a function call (remember it's holding an instance of the passed function)
+             funcParameter();
+             //run some other code
+             let t2 = Date.now();
+             return t2 - t1;
+          }
+          //define an zero parameter function
+          const addOneToOne = () => 1 + 1;
+          //invoke the single parameter function, passing the zero parameter function as it's parameter
+          timeFuncRuntime(addOneToOne);
+        </code>
+      </pre>
+
+      <pre>
+        <code>
+          const checkThatTwoPlusTwoEqualsFourAMillionTimes = () => {
+            for(let i = 1; i <= 1000000; i++) {
+              if ( (2 + 2) != 4) {
+                console.log('Something has gone very wrong :( ');
+              }
+            }
+          };
+
+          const addTwo = num => num + 2;
+
+          const timeFuncRuntime = funcParameter => {
+            let t1 = Date.now();
+            funcParameter();
+            let t2 = Date.now();
+            return t2 - t1;
+          };
+
+          // Write your code below
+          const time2p2 = timeFuncRuntime(checkThatTwoPlusTwoEqualsFourAMillionTimes);
+
+          const checkConsistentOutput = (param1Function, param2Value) => {
+            let results = [];
+            for(let i = 0; i < 2; i++){
+              results.push(param1Function(param2Value));
+            }
+            if(results[0] === results[1]){
+              return param1Function(param2Value);
+            } else{
+              return 'This function returned inconsistent results';
+            }
+          }
+
+          console.log(checkConsistentOutput(addTwo, 5));
+        </code>
+      </pre>
+    </section>
+  </article>
+
+  <article class="module">
+    <h5>Iterators</h5>
+    <p>Built-in Javascript array methods that help us iterate.</p>
+
+    <section>
+      <h6>.forEach()</h6>
+      <pre>
+        <code>
+          const fruits = ['mango', 'papaya', 'pineapple', 'apple'];
+
+          // Iterate over fruits below
+          fruits.forEach(fruitItem => console.log(`I want to eat a ${fruitItem}`));
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>.map()</h6>
+      <p><code>.map()</code> work much the same as <code>.forEach()</code>, with the exception that <code>.map()</code> returns a new array.</p>
+      <pre>
+        <code>
+          const animals = ['Hen', 'elephant', 'llama', 'leopard', 'ostrich', 'Whale', 'octopus', 'rabbit', 'lion', 'dog'];
+
+          // Create the secretMessage array below
+          const secretMessage = animals.map(animal => {
+            return animal.substring(0,1);
+          });
+
+          console.log(secretMessage.join(''));
+          //Output: HelloWorld
+
+          const bigNumbers = [100, 200, 300, 400, 500];
+
+          // Create the smallNumbers array below
+          const smallNumbers = bigNumbers.map(number =>{
+            return number / 100;
+          });
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>.filter()</h6>
+      <p><code>.filter()</code> returns a new array with elements of the original filtered out.</p>
+      <pre>
+        <code>
+          const randomNumbers = [375, 200, 3.14, 7, 13, 852];
+
+          // Call .filter() on randomNumbers below
+          const smallNumbers = randomNumbers.filter(number =>{
+            return number < 250;
+          })
+
+          const favoriteWords = ['nostalgia', 'hyperbole', 'fervent', 'esoteric', 'serene'];
+
+
+          // Call .filter() on favoriteWords below
+          const longFavoriteWords = favoriteWords.filter(words => {
+            return words.length > 7;
+          })
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>.findIndex()</h6>
+      <p><code>.findIndex()</code> returns the index of the fist element that evaluates to <code>true</code> in the callback function.</p>
+      <pre>
+        <code>
+          const animals = ['hippo', 'tiger', 'lion', 'seal', 'cheetah', 'monkey', 'salamander', 'elephant'];
+
+          const foundAnimal = animals.findIndex(animal => {
+            return animal == 'elephant';
+          });
+
+          const startsWithS = animals.findIndex(animal => {
+            return animal.substring(0,1) == "s";
+          });
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>.reduce()</h6>
+      <p><code>.reduce()</code> returns a single value after iterating through elements of an array.</p>
+      <p>
+        The callback function has two parameters, <code>accumulator</code> and <code>currentValue</code>. The value of <code>accumulator</code> starts off as the value of the first element in the array and the <code>currentValue</code> starts as the second element.
+      </p>
+      <p>
+        As <code>.reduce()</code> iterates through the array, the return value of the callback function becomes the <code>accumulator</code> value for the next iteration, <code>currentValue</code> takes on the value of the current element in the looping process.
+      </p>
+      <pre>
+        <code>
+          const newNumbers = [1, 3, 5, 7];
+
+          const newSum = newNumbers.reduce((accumulator, currentValue) => {
+            console.log('The value of accumulator: ', accumulator);
+            console.log('The value of currentValue: ', currentValue);
+            return accumulator + currentValue;
+          });
+          console.log(newSum);
+          //Output:
+          //The value of accumulator:  1
+          //The value of currentValue:  3
+          //The value of accumulator:  4
+          //The value of currentValue:  5
+          //The value of accumulator:  9
+          //The value of currentValue:  7
+          //16
+
+          //Using a second parameter of 10
+          const newNumbers = [1, 3, 5, 7];
+
+          const newSum = newNumbers.reduce((accumulator, currentValue) => {
+            console.log('The value of accumulator: ', accumulator);
+            console.log('The value of currentValue: ', currentValue);
+            return accumulator + currentValue;
+          }, 10);
+          console.log(newSum);
+          //Output:
+          //The value of accumulator:  10
+          //The value of currentValue:  1
+          //The value of accumulator:  11
+          //The value of currentValue:  3
+          //The value of accumulator:  14
+          //The value of currentValue:  5
+          //The value of accumulator:  19
+          //The value of currentValue:  7
+          //26
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>.some() and .every()</h6>
+      <p>
+        <code>.some()</code> returns true if <em>some</em> of the array elements match the callback.
+      </p>
+      <p>
+        <code>.every()</code> returns true if <em>every</em> element in the array matches the callback.
+      </p>
+      <pre>
+        <code>
+          const words = ['unique', 'uncanny', 'pique', 'oxymoron', 'guise'];
+
+          // Something is missing in the method call below
+          console.log(words.some((word) => {
+            return word.length < 6;
+          }));
+
+          // Use filter to create a new array
+          const interestingWords = words.filter(word => {
+            return word.length > 5;
+          })
+
+          // Make sure to uncomment the code below and fix the incorrect code before running it
+          console.log(interestingWords.every((word) => {
+          	return word.length > 5;
+          } ));
+        </code>
+      </pre>
+    </section>
+
+    <aside class="project">
+      <pre>
+        <code>
+          const favBands = ['Metallica', 'The Guess Who', 'The Beatles', 'Nightwish', 'Opeth'];
+
+          // Define a callback function before you use it in a iterator.
+          const countChars = function(band){
+            return band.length;
+          }
+
+          favBands.forEach(band => {
+            console.log(countChars(band));
+          });
+
+          // Define a callback function before you use it in a iterator.
+          const totalChars = favBands.map(band => {
+            return countChars(band);
+          }).reduce((accumulator, currentValue) => {
+            return accumulator + currentValue;
+          })
+          console.log(totalChars);
+
+          // Define a callback function before you use it in a iterator.
+          const favBandAndSong = [['Metallica', 'For Whom the Bell Tolls'], ['The Guess Who', 'No Sugar Tonight/New Mother Nature'], ['The Beatles', 'Magical Mystery Tour'], ['Nightwish', 'Ghost Love Score'], ['Opeth', 'In My Time of Need']];
+
+          const condensedList = favBandAndSong.reduce((accumulator, currentValue) => {
+            return accumulator.concat(currentValue);
+          })
+          console.log(condensedList);
+        </code>
+      </pre>
+    </aside>
+
+    <aside class="project">
+      <h6>Mini Linter</h6>
+      <pre>
+        <code>
+          let story = 'Last weekend, I took literally the most beautiful bike ride of my life. The route is called "The 9W to Nyack" and it actually stretches all the way from Riverside Park in Manhattan to South Nyack, New Jersey. It\'s really an adventure from beginning to end! It is a 48 mile loop and it basically took me an entire day. I stopped at Riverbank State Park to take some extremely artsy photos. It was a short stop, though, because I had a really long way left to go. After a quick photo op at the very popular Little Red Lighthouse, I began my trek across the George Washington Bridge into New Jersey.  The GW is actually very long - 4,760 feet! I was already very tired by the time I got to the other side.  An hour later, I reached Greenbrook Nature Sanctuary, an extremely beautiful park along the coast of the Hudson.  Something that was very surprising to me was that near the end of the route you actually cross back into New York! At this point, you are very close to the end.';
+
+          let overusedWords = ['really', 'very', 'basically'];
+
+          let unnecessaryWords = ['extremely', 'literally', 'actually' ];
+
+          //split the string into individual words and save them in a new array called storyWords.
+          const storyWords = story.split(" ");
+          //console.log(storyWords);
+          //console.log(storyWords.length);
+
+          //Iterate over your array to filter out these words. Save the remaining words in an array called betterWords
+          const betterWords = storyWords.filter(word => {
+            return (unnecessaryWords.includes(word)) ? '' : word;
+          });
+          //console.log(betterWords.length);
+
+          //let the user of your program know how many times they have used these overused words.
+          let reallyCount = 0;
+          let veryCount = 0;
+          let basicallyCount = 0;
+
+          for (word of storyWords){
+            if(word == "really"){
+              reallyCount += 1;
+            } else if(word == "very"){
+              veryCount += 1;
+            } else if(word == "basically"){
+              basicallyCount += 1;
+            }
+          }
+          //console.log(`You used the word "really" ${reallyCount} times.`);
+          //console.log(`You used the word "very" ${veryCount} times.`);
+          //console.log(`You used the word "basically" ${basicallyCount} times.`);
+
+          //count how many sentences are in the paragraph.
+          let sentenceCount = 0;
+          storyWords.forEach(word => {
+            let lastChar = word[word.length - 1];
+            if(lastChar == "." || lastChar == "!"){
+              sentenceCount += 1;
+            }
+          });
+          //console.log(sentenceCount);
+
+          function logParagraphInfo(){
+            console.log(`Your paragraph contains ${storyWords.length} word, and ${sentenceCount} sentences.`);
+            console.log(`${reallyCount} of those words were "really."`);
+            console.log(`${veryCount} of those words were "very."`);
+            console.log(`${basicallyCount} of those words were "basically."`);
+          }
+          logParagraphInfo();
+          console.log(betterWords.join(' '));
+        </code>
+      </pre>
+    </aside>
+  </article>
 </article>
 </main>
 
