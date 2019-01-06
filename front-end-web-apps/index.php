@@ -1001,6 +1001,336 @@ include $_SERVER["DOCUMENT_ROOT"] . "/includes/header.php";
       </aside>
     </section>
   </article>
+
+  <article class="module">
+    <h5>Objects</h5>
+
+    <section>
+      <h6>Creating Object Literals</h6>
+      <p>Objects can be assigned to variables just like any JavaScript type. We use curly braces, {}, to designate an object literal:</p>
+      <pre>
+        <code>
+          let spaceship = {
+            'Fuel Type' : 'deisel',
+            color : 'red' //doesn't need quotes around the key because it doesn't have a space
+          }; // spaceship is an empty object
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>Getters</h6>
+      <p>Getters are methods that get and return the internal properties of an object.</p>
+      <pre>
+        <code>
+          const robot = {
+            _model: '1E78V2',
+            _energyLevel: 100,
+            get energyLevel () {
+              if(typeof(this._energyLevel) === 'number'){
+                return `My current energy level is ${this._energyLevel}`;
+              } else {
+                return 'System malfunction: cannot retrieve energy level';
+              }
+            }
+          };
+
+          console.log(robot.energyLevel);
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>Setters</h6>
+      <p>methods which reassign values of existing properties within an object</p>
+      <pre>
+        <code>
+          const robot = {
+            _model: '1E78V2',
+            _energyLevel: 100,
+            _numOfSensors: 15,
+            get numOfSensors(){
+              if(typeof this._numOfSensors === 'number'){
+                return this._numOfSensors;
+              } else {
+                return 'Sensors are currently down.'
+              }
+            },
+            set numOfSensors(num){
+              if(typeof num === 'number' && num >= 0){
+                this._numOfSensors = num;
+              } else {
+                console.log('Pass in a number that is greater than or equal to 0');
+              }
+            }
+          };
+
+          robot.numOfSensors = 100;
+          console.log(robot.numOfSensors);
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>Factory Functions</h6>
+      <p>a function that returns an object and can be reused to make multiple object instances. Factory functions can also have parameters allowing us to customize the object that gets returned.</p>
+      <pre>
+        <code>
+          const robotFactory = (model, mobile) => {
+            return {
+              model: model,
+              mobile: mobile,
+              beep (){
+                console.log('Beep Boop')
+              }
+            }
+          }
+
+          const tinCan = robotFactory('P-500', true);
+          tinCan.beep();
+        </code>
+      </pre>
+    </section>
+    <section>
+      <h6>Property Value Shorthand</h6>
+      <p>A type of <em>destructuring</em> that can be used when the names of the properties passed into a factory function match the names of the properties being returned.</p>
+      <p>The above becomes...</p>
+      <pre>
+        <code>
+          const robotFactory = (model, mobile) => {
+            return {
+              model,
+              mobile,
+              beep (){
+                console.log('Beep Boop')
+              }
+            }
+          }
+        </code>
+      </pre>
+    </section>
+    <section>
+      <h6>Destructuring Assignment</h6>
+      <p>In destructured assignment we create a variable with the name of an object's key that is wrapped in curly braces { } and assign to it the object.</p>
+      <pre>
+        <code>
+          const vampire = {
+            name: 'Dracula',
+            residence: 'Transylvania',
+            preferences: {
+              day: 'stay inside',
+              night: 'satisfy appetite'
+            }
+          };
+
+          const residence = vampire.residence;
+          console.log(residence); // Prints 'Transylvania'
+          const day = vampire.preference.day;
+          console.log(day); // Prints 'stay inside'
+        </code>
+      </pre>
+      <p>becomes...</p>
+      <pre>
+        <code>
+          ...
+
+          const {residence} = vampire;
+          console.log(residence); //Print 'Transylvania'
+          const {day} = vampire.preference;
+          console.log(day); // Prints 'stay inside'
+        </code>
+      </pre>
+      <p>Another example</p>
+      <pre>
+        <code>
+          const robot = {
+            model: '1E78V2',
+            energyLevel: 100,
+            functionality: {
+              beep() {
+                console.log('Beep Boop');
+              },
+              fireLaser() {
+                console.log('Pew Pew');
+              },
+            }
+          };
+
+          const {functionality} = robot;
+          functionality.beep();
+        </code>
+      </pre>
+    </section>
+    <aside class="project">
+      <h6>Meal Maker</h6>
+      <pre>
+        <code>
+          //create an empty menu object
+          const menu = {
+            //Add a _courses property to your menu object and set its value to an empty object.
+            _courses : {
+              //Create three properties inside the _courses object called appetizers, mains, and desserts. Each one of these should initialize to an empty array.
+              appetizers: [],
+              mains: [],
+              desserts: [],
+            },
+            get appetizers() {
+
+            },
+            //Create getter and setter methods for the appetizers, mains, and desserts properties.
+            get mains(){
+            },
+            get desserts(){
+            },
+            set appetizers(dishInfo){
+              if(dishInfo.name !== "" && dishInfo.price !== ""){
+                this._courses.appetizers.push({"name" : dishInfo.name, "price" : dishInfo.price});
+              }
+            },
+            set mains(dishInfo){
+              if(dishInfo.name !== "" && dishInfo.price !== ""){
+                this._courses.mains.push({"name" : dishInfo.name, "price" : dishInfo.price});
+              }
+            },
+            set desserts(dishInfo){
+              if(dishInfo.name !== "" && dishInfo.price !== ""){
+                this._courses.desserts.push({"name" : dishInfo.name, "price" : dishInfo.price});
+              }
+            },
+            //create an empty getter method for the _courses property.
+            get courses(){
+              //return an object that contains key/value pairs for appetizers, mains, and desserts.
+              return {
+                appetizers: this._courses.appetizers,
+                mains: this._courses.mains,
+                desserts: this._courses.desserts
+              }
+            },
+            //create a method called .addDishToCourse() which will be used to add a new dish to the specified course on the menu.
+            addDishToCourse(courseName, name, price) {
+              const dish = {
+                name,
+                price
+              }
+              this[courseName] = dish;
+            },
+            //reate a method inside the menu object called .getRandomDishFromCourse()
+            getRandomDishFromCourse(courseName){
+              //Retrieve the array of the given course's dishes from the menu's _courses object and store in a variable called dishes.
+              const dishes = this._courses[courseName];
+              //Generate a random index by multiplying Math.random() by the length of the dishes array
+              const randomNumber = Math.floor(Math.random() * dishes.length);
+              //Return the dish located at that index in dishes
+              return dishes[randomNumber];
+            },
+            //create a .generateRandomMeal() function which will automatically generate a three-course meal for us.
+            generateRandomMeal(){
+              const appetizer = this.getRandomDishFromCourse('appetizers');
+              const main = this.getRandomDishFromCourse('mains');
+              const dessert = this.getRandomDishFromCourse('desserts');
+              const coursePrices = [appetizer.price, main.price, dessert.price];
+              const mealPrice = coursePrices.reduce((accumulator, currentValue) => {
+                return accumulator + currentValue;
+              });
+
+              return `Your meal is ${appetizer.name}, ${main.name} and ${dessert.name}. The price of your meail is $${mealPrice}.`;
+            }
+          };
+
+          menu.addDishToCourse('appetizers', 'spring rolls', 5);
+          menu.addDishToCourse('appetizers', 'salad', 2);
+          menu.addDishToCourse('appetizers', 'soup', 3);
+
+          menu.addDishToCourse('mains', 'steak', 20);
+          menu.addDishToCourse('mains', 'chicken', 15);
+          menu.addDishToCourse('mains', 'fish', 18);
+
+          menu.addDishToCourse('desserts', 'pie', 4);
+          menu.addDishToCourse('desserts', 'cake', 3);
+          menu.addDishToCourse('desserts', 'ice cream', 2);
+
+          meal = menu.generateRandomMeal();
+          console.log(meal);
+        </code>
+      </pre>
+    </aside>
+    <aside class="project">
+      <h6>Team Stats</h6>
+      <pre>
+        <code>
+          const team = {
+            _players: [
+            	{
+              	firstName: 'Mats',
+              	lastName: 'Sundin',
+              	age: 35
+            	},
+              {
+                firstName: 'Curtis',
+                lastName: 'Joseph',
+                age: 32
+              },
+              {
+                firstName: 'Auston',
+                lastName: 'Matthews',
+                age: 20
+              }
+            ],
+            _games: [
+              {
+                opponent: 'Canadiens',
+                teamPoints: 4,
+                opponentPoints: 3
+              },
+              {
+                opponent: 'Senators',
+                teamPoints: 6,
+                opponentPoints: 0
+              },
+              {
+                opponent: 'Lightning',
+                teamPoints: 2,
+                opponentPoints: 4
+              }
+            ],
+            get players() {
+
+            },
+            get games() {
+
+            },
+            addPlayer(firstName, lastName, age){
+              const player = {
+                firstName,
+                lastName,
+                age
+              }
+              this._players.push(player);
+            },
+            addGame(opponent, teamPoints, opponentPoints){
+              const game = {
+                opponent,
+                teamPoints,
+                opponentPoints
+              }
+              this._games.push(game);
+            }
+          };
+
+          team.addPlayer('Mitch', 'Marner', 21);
+          team.addPlayer('John', 'Tavares', 28);
+          team.addPlayer('Morgan', 'Reilly', 24);
+
+          team.addGame('Red Wings', 5, 2);
+          team.addGame('Bruins', 2, 3);
+          team.addGame('Canucks', 2, 1);
+
+          console.log(team._players);
+          console.log(team._games);
+        </code>
+      </pre>
+    </aside>
+  </article>
 </article>
 </main>
 
