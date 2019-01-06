@@ -861,6 +861,146 @@ include $_SERVER["DOCUMENT_ROOT"] . "/includes/header.php";
       </pre>
     </aside>
   </article>
+
+  <article class="module">
+    <h5>Conditional Statements</h5>
+
+    <section>
+      <h6>Short-Circuit Evaluation</h6>
+      <pre>
+        <code>
+          let defaultName;
+          if (username) {
+            defaultName = username;
+          } else {
+            defaultName = 'Stranger';
+          }
+        </code>
+      </pre>
+      <p>becomes...</p>
+      <pre>
+        <code>
+          let defaultName = username || 'Stranger';
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>The switch keyword</h6>
+      <pre>
+        <code>
+          let groceryItem = 'papaya';
+
+          if (groceryItem === 'tomato') {
+            console.log('Tomatoes are $0.49');
+          } else if (groceryItem === 'papaya'){
+            console.log('Papayas are $1.29');
+          } else {
+            console.log('Invalid item');
+          }
+        </code>
+      </pre>
+      <p>becomes...</p>
+      <pre>
+        <code>
+          let groceryItem = 'papaya';
+
+          switch (groceryItem) {
+            case 'tomato':
+              console.log('Tomatoes are $0.49');
+              break;
+            case 'lime':
+              console.log('Limes are $1.49');
+              break;
+            case 'papaya':
+              console.log('Papayas are $1.29');
+              break;
+            default:
+              console.log('Invalid item');
+              break;
+          }
+
+          // Prints 'Papayas are $1.29'
+        </code>
+      </pre>
+
+      <aside class="project">
+        <h6>Magic Eight Ball</h6>
+        <pre>
+          <code>
+            const userName = "Billy";
+
+            userName ? console.log(`Hello, ${userName}!`) : console.log('Hello!');
+
+            let userQuestion = 'Am I cool?';
+            console.log(`${userName} asked: ${userQuestion}`);
+
+            let randomNumber = Math.floor(Math.random() * 8);
+
+            let eightBall = "";
+
+            switch (randomNumber) {
+              case 0:
+                eightBall = 'It is certain';
+                break;
+             	case 1:
+                eightBall = 'It is decidedly so';
+                break;
+              case 2:
+                eightBall = 'Reply hazy try again';
+                break;
+              case 3:
+                eightBall = 'Cannot predict now';
+                break;
+              case 4:
+                eightBall = 'Do not count on it';
+                break;
+              case 5:
+                eightBall = 'My sources say so';
+                break;
+              case 6:
+                eightBall = 'Outlook not so good';
+                break;
+              case 7:
+                eightBall = 'Signs point to yes';
+                break;
+              default:
+                eightBall = 'Response not available';
+                break;
+            }
+
+            console.log(eightBall);
+          </code>
+        </pre>
+      </aside>
+
+      <aside class="project">
+        <h6>Race Day</h6>
+        <pre>
+          <code>
+            let raceNumber = Math.floor(Math.random() * 1000);
+
+            let isRegisteredEarly = true;
+            let runnersAge = 18;
+
+            if(isRegisteredEarly && runnersAge > 18){
+              raceNumber += 1000;
+            }
+
+            if(isRegisteredEarly && runnersAge > 18){
+              console.log(`You will run at 9:30am, and wear the number ${raceNumber}.`);
+            } else if(!isRegisteredEarly && runnersAge > 18){
+              console.log(`You will run at 11:00am, and wear the number ${raceNumber}.`);
+            } else if(runnersAge < 18){
+              console.log(`You will run at 12:30pm, and wear the number ${raceNumber}.`);
+            } else {
+              console.log(`Please see the registration desk.`);
+            }
+          </code>
+        </pre>
+      </aside>
+    </section>
+  </article>
 </article>
 </main>
 
