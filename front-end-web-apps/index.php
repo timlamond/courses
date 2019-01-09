@@ -1331,6 +1331,261 @@ include $_SERVER["DOCUMENT_ROOT"] . "/includes/header.php";
       </pre>
     </aside>
   </article>
+
+  <article class="module">
+    <h5>Classes</h5>
+    <pre>
+      <code>
+        class HospitalEmployee {
+          constructor(name) {
+            this._name = name;
+            this._remainingVacationDays = 20;
+          }
+
+          get name() {
+            return this._name;
+          }
+
+          get remainingVacationDays() {
+            return this._remainingVacationDays;
+          }
+
+          takeVacationDays(daysOff) {
+            this._remainingVacationDays -= daysOff;
+          }
+
+          //Static methods are called on the class, but not on instances of the class.
+          static generatePassword() {
+            const randInt = Math.floor(Math.random()*10000);
+            return randInt;
+          }
+        }
+
+        class Nurse extends HospitalEmployee {
+          constructor(name, certifications) {
+            super(name);
+            this._certifications = certifications;
+          }
+
+          get certifications() {
+            return this._certifications;
+          }
+
+          addCertification(newCertification) {
+            this.certifications.push(newCertification);
+          }
+        }
+
+        const nurseOlynyk = new Nurse('Olynyk', ['Trauma','Pediatrics']);
+        nurseOlynyk.takeVacationDays(5);
+        console.log(nurseOlynyk.remainingVacationDays);
+        nurseOlynyk.addCertification('Genetics');
+        console.log(nurseOlynyk.certifications);
+      </code>
+    </pre>
+
+    <aside class="project">
+      <h6>Build a Library</h6>
+      <pre>
+        <code>
+          class Media {
+            constructor(title){
+              this._title = title;
+              this._isCheckedOut = false;
+              this._ratings = [];
+            }
+
+            get title() {
+              return this._title;
+            }
+
+            get isCheckedOut() {
+              return this._isCheckedOut;
+            }
+
+            get ratings() {
+              return this._ratings;
+            }
+
+            getAverageRating() {
+              const numberOfRatings = this._ratings.length;
+              const sumOfRatings = this._ratings.reduce((accumulator, currentValue) => {
+                return accumulator + currentValue;
+              });
+              const averageRating = sumOfRatings / numberOfRatings;
+              return averageRating;
+            }
+
+            set isCheckedOut(value){
+              this._isChecktOut = value;
+            }
+
+            toggleCheckOutStatus() {
+              this._isCheckedOut = !this._isCheckedOut;
+            }
+
+            addRating(rating){
+              this._ratings.push(rating);
+            }
+          }
+
+          class Book extends Media {
+            constructor(title, author, pages){
+              super(title);
+              this._author = author;
+              this._pages = pages;
+            }
+
+            get author() {
+              return this._author;
+            }
+
+            get pages() {
+              return this._pages;
+            }
+          }
+
+          class Movie extends Media {
+            constructor(title, director, runTime){
+              super(title);
+              this._director = director;
+              this._runTime = runTime;
+            }
+
+            get director() {
+              return this._director;
+            }
+
+            get runTime() {
+              return this._runTime;
+            }
+          }
+
+          class CD extends Media {
+            constructor(title, artist){
+              super(title);
+              this._artist = artist;
+            }
+
+            get artist() {
+              return this._artist;
+            }
+          }
+
+          const bookWizard = new Book('Wizards First Rule', 'Terry Goodkind', 523);
+          console.log(bookWizard.title);
+          bookWizard.toggleCheckOutStatus();
+          console.log(bookWizard.isCheckedOut);
+          console.log(bookWizard.author);
+          console.log(bookWizard.pages);
+          bookWizard.addRating(4);
+          bookWizard.addRating(8);
+          bookWizard.addRating(10);
+          bookWizard.addRating(9);
+          console.log(bookWizard.getAverageRating());
+
+          const movieHook = new Movie('Hook', 'Steven Speilberg', 105);
+          console.log(movieHook.title);
+          console.log(movieHook.isCheckedOut);
+          console.log(movieHook.director);
+          console.log(movieHook.runTime);
+          movieHook.addRating(8);
+          movieHook.addRating(9);
+          console.log(movieHook.getAverageRating());
+
+          const cdRTL = new CD('Ride the Lightning', 'Metallica');
+          console.log(cdRTL.title);
+          console.log(cdRTL.artist);
+          cdRTL.toggleCheckOutStatus();
+          console.log(cdRTL.isCheckedOut);
+          cdRTL.addRating(10);
+          cdRTL.addRating(9.5);
+          cdRTL.addRating(10);
+          cdRTL.addRating(9);
+          console.log(cdRTL.getAverageRating());
+          cdRTL.toggleCheckOutStatus();
+          console.log(cdRTL.isCheckedOut);
+        </code>
+      </pre>
+    </aside>
+
+    <aside class="project">
+      <h6>School Catalogue</h6>
+      <pre>
+        <code>
+          class School {
+            constructor(name, level, numberOfStudents){
+              this._name = name;
+              this._level = level;
+              this._numberOfStudents = numberOfStudents;
+            }
+
+            get name() {
+              return this._name;
+            }
+
+            get level() {
+              return this._level;
+            }
+
+            get numberOfStudents() {
+              return this._numberOfStudents;
+            }
+
+            set numberOfStudents(value) {
+              if(value.isNaN()){
+                console.log('Invalid input: numberOfStudents must be set to a Number.');
+              } else {
+                this._numberOfStudents = value;
+              }
+            }
+
+            quickFacts() {
+              console.log(`${this._name} educates ${this._numberOfStudents} at the ${this._level} school level.`);
+            }
+
+            static pickSubstituteTeacher(substituteTeachers) {
+              const randNumber = Math.floor(Math.random() * substituteTeachers.length);
+              return substituteTeachers[randNumber];
+            }
+          }
+
+          class PrimarySchool extends School {
+            constructor(name, numberOfStudents, pickupPolicy){
+              super(name, 'primary', numberOfStudents);
+              this._pickupPolicy = pickupPolicy;
+            }
+
+            get pickupPolicy() {
+              return this._pickupPolicy;
+            }
+          }
+
+          class MiddleSchool extends School {
+            constructor(name, numberOfStudents){
+              super(name, 'middle', numberOfStudents);
+            }
+          }
+
+          class HighSchool extends School {
+            constructor(name, numberOfStudents, sportsTeams){
+              super(name, 'high', numberOfStudents);
+              this._sportsTeams = [];
+            }
+
+            get sportsTeams() {
+              return this._sportsTeams;
+            }
+          }
+
+          const plumTreePark = new PrimarySchool('Plum Tree Park', 340, 'morning and night');
+          plumTreePark.quickFacts();
+          const sub = School.pickSubstituteTeacher(['Rachelle', 'Victor', 'Kate']);
+          console.log(sub);
+        </code>
+      </pre>
+    </aside>
+  </article>
 </article>
 </main>
 
