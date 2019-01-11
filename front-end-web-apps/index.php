@@ -1586,6 +1586,426 @@ include $_SERVER["DOCUMENT_ROOT"] . "/includes/header.php";
       </pre>
     </aside>
   </article>
+
+  <article class="module">
+    <h5>Intermediate JavaScript Modules</h5>
+    <p>JavaScript modules are reusable pieces of code that can be exported from one program and imported for use in another program.</p>
+    <p>By separating code with similar logic into files called modules, we can:</p>
+    <ul>
+      <li>find, fix, and debug code more easily;</li>
+      <li>reuse and recycle defined logic in different parts of our application;</li>
+      <li>keep information private and protected from other modules;</li>
+      <li>and, importantly, prevent pollution of the global namespace and potential naming collisions, by cautiously selecting variables and behavior we load into a program.</li>
+    </ul>
+    <p>
+      I could use this to break out and simplify the craziness of BRUCE's global.js file.
+    </p>
+
+    <section>
+      <h6>module.exports</h6>
+      <p>The pattern we use to export modules is thus:</p>
+      <ol>
+        <li>Define an object to represent the module.</li>
+        <li>Add data or behavior to the module.</li>
+        <li>Export the module.</li>
+      </ol>
+      <pre>
+        <code>
+          let Airplane = {};
+          Airplane.myAirplane = "StarJet";
+
+          module.exports = Airplane;
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>require()</h6>
+      <p>The pattern to import a module is:</p>
+      <ol>
+        <li>Import the module</li>
+        <li>Use the module and its properties within a program.</li>
+      </ol>
+      <pre>
+        <code>
+          const Airplane = require('./1-airplane.js');
+
+          function displayAirplane() {
+            console.log(Airplane.myAirplane);
+          }
+
+          displayAirplane();
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>module.exports II</h6>
+      <p>You can also user module.exports to export methods</p>
+      <pre>
+        <code>
+          let Airplane = {};
+
+          module.exports = {
+            myAirplane: "CloudJet",
+            displayAirplane: function(){
+              return this.myAirplane;
+            }
+          };
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>export default</h6>
+      <p>Replaces module.exports in ES6</p>
+      <pre>
+        <code>
+          module.exports = Airplane;
+        </code>
+      </pre>
+      <p>becomes...</p>
+      <pre>
+        <code>
+          export default Airplane;
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>import</h6>
+      <p>ES6 introduced way of importing objects.</p>
+      <pre>
+        <code>
+          import Airplane from './airplane';
+
+          function displayFuelCapacity(){
+            Airplane.availableAirplanes.forEach(function(element){
+              console.log('Fuel Capacity of ' + element.name + ' : ' + element.fuelCapacity);
+            });
+          }
+
+          displayFuelCapacity();
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>Named Exports</h6>
+      <p>Introduced in ES6 - allows you to specify which objects to export, rather than globally exporting the entire module.</p>
+      <pre>
+        <code>
+          let availableAirplanes = [
+          {
+            name: 'AeroJet',
+            fuelCapacity: 800,
+            availableStaff: [
+              'pilots',
+              'flightAttendants',
+              'engineers',
+              'medicalAssistance',
+              'sensorOperators'
+            ]
+          },
+          {
+            name: 'SkyJet',
+            fuelCapacity: 500,
+            availableStaff: [
+              'pilots',
+              'flightAttendants'
+            ]
+          }
+        ];
+
+        let flightRequirements = {
+          requiredStaff: 4
+        };
+
+        const meetsStaffRequirements = (availableStaff, requiredStaff) => {
+          if(availableStaff.length >= requiredStaff){
+            return true;
+          } else {
+            return false;
+          }
+        }
+
+        export {availableAirplanes, flightRequirements, meetsStaffRequirements};
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>Named Imports</h6>
+      <p>Used to import objects from the Named Exports. These objects are available to be used as is in the code, without the need for, for example, <code>Airplane.flightRequirements</code>. It would just be used as <code>flightRequirements</code></p>
+      <pre>
+        <code>
+          import {availableAirplanes, flightRequirements, meetsStaffRequirements} from './airplane';
+
+          function displayFuelCapacity(){
+            availableAirplanes.forEach(function(element){
+              console.log('Fuel Capacity of ' + element.name + ' : ' + element.fuelCapacity);
+            });
+          }
+
+          displayFuelCapacity();
+
+          function displayStaffStatus() {
+            availableAirplanes.forEach(function(element){
+              console.log(element.name + ' meets staff requirements: ' + meetsStaffRequirements(element.availableStaff, flightRequirements.requiredStaff));
+            });
+          }
+
+          displayStaffStatus();
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>Export Named Exports</h6>
+      <p>Named exports can be exported as soon as they are defined by prepending them with the <code>export</code> keyword. Exported Named Exports import the same way as defined previously.</p>
+      <pre>
+        <code>
+          export let availableAirplanes = [
+          {
+            name: 'AeroJet',
+            fuelCapacity: 800,
+            availableStaff: [
+              'pilots',
+              'flightAttendants',
+              'engineers',
+              'medicalAssistance',
+              'sensorOperators'
+            ],
+            maxSpeed: 1200,
+            minSpeed: 300
+          },
+          {
+            name: 'SkyJet',
+            fuelCapacity: 500,
+            availableStaff: [
+              'pilots',
+              'flightAttendants'
+            ],
+            maxSpeed: 800,
+            minSpeed: 200
+          }
+        ];
+
+        export let flightRequirements = {
+          requiredStaff: 4,
+          requiredSpeedRange: 700
+        };
+
+        export const meetsStaffRequirements = (availableStaff, requiredStaff) => {
+          if(availableStaff.length >= requiredStaff){
+            return true;
+          } else {
+            return false;
+          }
+        }
+
+        export const meetsSpeedRangeRequirements = (maxSpeed, minSpeed, requiredSpeedRange) => {
+          const range = maxSpeed - minSpeed;
+          if(range > requiredSpeedRange){
+            return true;
+          } else {
+            return false;
+          }
+        }
+        </code>
+      </pre>
+    </section>
+
+    <section>
+      <h6>Export as</h6>
+      <p>Allows you to give exported variables names an alias. Only works with the export statement <code>export {variable as var}</code>, and not <code>export let variable = {}</code></p>
+    </section>
+
+    <section>
+      <h6>Import as</h6>
+      <p>Basic usage is to call the alias names in the standard import statement</p>
+      <pre>
+        <code>
+          import {var} from './module'
+        </code>
+      </pre>
+      <p>You can also give an alias to a variable not aliased in the export</p>
+      <pre>
+        <code>
+          import {var, variable2 as var2} from './module'
+        </code>
+      </pre>
+      <p>Or, you can give an alias to the entire module</p>
+      <pre>
+        <code>
+          import * as AliasName from './module';
+
+          AliasName.var;
+        </code>
+      </pre>
+    </section>
+
+    <aside class="project">
+      <h6>Message Mixer</h6>
+      <p>messageMixer.js</p>
+      <pre>
+        <code>
+          const countCharacter = function(inputString, inputCharacter) {
+            let count = 0;
+            let string = inputString.toLowerCase();
+            let character = inputCharacter.toLowerCase();
+              for (let i = 0; i < string.length; i++) {
+                if (string[i] === character) {
+                   count++;
+                }
+              }
+            return count;
+          };
+
+          const capitalizeFirstCharacterOfWords = function(string) {
+            let arr = string.split(" ");
+              for (let i = 0; i < arr.length; i++) {
+                let word = arr[i];
+                  arr[i] = word[0].toUpperCase() + word.substring(1);
+              }
+            return arr.join(" ");
+          };
+
+
+          const reverseWord = function(word) {
+            return word.split("").reverse().join("");
+          };
+
+          const reverseAllWords = function(sentence) {
+            let words = sentence.split(" ");
+              for (let i = 0; i < words.length; i++) {
+                words[i] = reverseWord(words[i]);
+              }
+             return words.join(" ");
+          };
+
+
+          const replaceFirstOccurence = function(string, toBeReplaced, replaceWith) {
+            return string.replace(toBeReplaced, replaceWith);
+          };
+
+
+          const replaceAllOccurrences = function(string, toBeReplaced, replaceWith) {
+            return string.split(toBeReplaced).join(replaceWith);
+          };
+
+          const encode = function(string) {
+            let replacementObject = { "a": "@", "s": "$", "i": "!", "o":"0" };
+              for (let key in replacementObject) {
+                string = replaceAllOccurrences(string, key, replacementObject[key]);
+              }
+              return string;
+          };
+
+          const palindrome = function(str){
+            return str + " " + reverseWord(str);
+          }
+
+          const pigLatin = function(sentence, character){
+            return sentence.split(" ").join(character + " ");
+          }
+
+          export {countCharacter, capitalizeFirstCharacterOfWords, reverseWord, reverseAllWords, replaceFirstOccurence, replaceAllOccurrences, encode, palindrome, pigLatin};
+        </code>
+      </pre>
+      <p>message.js</p>
+      <pre>
+        <code>
+          import {countCharacter, capitalizeFirstCharacterOfWords, reverseWord, reverseAllWords, replaceFirstOccurence, replaceAllOccurrences, encode, palindrome, pigLatin} from './messageMixer';
+
+          function displayMessage() {
+            console.log(countCharacter("What is the color of the sky?", "t"));
+            console.log(capitalizeFirstCharacterOfWords("What is the color of the sky?"));
+            console.log(reverseWord("What is the color of the sky?"));
+            console.log(reverseAllWords("What is the color of the sky?"));
+            console.log(replaceFirstOccurence("What is the color of the sky?", "sky", "water"));
+            console.log(encode("What is the color of the sky?"));
+            console.log(palindrome("What is the color of the sky?"));
+            console.log(pigLatin("What is the color of the sky?", "q"));
+          }
+
+          displayMessage();
+        </code>
+      </pre>
+    </aside>
+
+    <aside class="project">
+      <h6>WorkAround</h6>
+      <p>employee.js</p>
+      <pre>
+        <code>
+          let Employee = {
+            salary: 100000
+          };
+
+          let payGrades = {
+            entryLevel: { taxMultiplier: .05, benefits: ['health'], minSalary: 10000, maxSalary: 49999 },
+            midLevel: { taxMultiplier: .1, benefits: ['health', 'housing'], minSalary: 50000, maxSalary: 99999 },
+            seniorLevel: { taxMultiplier: .2, benefits: ['health', 'housing', 'wellness', 'gym'], minSalary: 100000, maxSalary: 200000 }
+          };
+
+          const getCadre = function() {
+            if (Employee.salary >= payGrades.entryLevel.minSalary && Employee.salary <= payGrades.entryLevel.maxSalary) {
+              return 'entryLevel';
+            } else if (Employee.salary >= payGrades.midLevel.minSalary && Employee.salary <= payGrades.midLevel.maxSalary) {
+              return 'midLevel';
+            } else return 'seniorLevel';
+          }
+
+          const calculateTax = function() {
+            return payGrades[getCadre()].taxMultiplier * Employee.salary;
+          }
+
+          const getBenefits = function() {
+            return payGrades[getCadre()].benefits.join(', ');
+          }
+
+          const calculateBonus = function() {
+            return .02 * Employee.salary;
+          }
+
+          const reimbursementEligibility = function() {
+            let reimbursementCosts = { health: 5000, housing: 8000, wellness: 6000, gym: 12000 };
+            let totalBenefitsValue = 0;
+            let employeeBenefits = payGrades[getCadre()].benefits;
+            for (let i = 0; i < employeeBenefits.length; i++) {
+              totalBenefitsValue += reimbursementCosts[employeeBenefits[i]];
+            }
+            return totalBenefitsValue;
+          }
+
+          export {getCadre as cadre, calculateTax as tax, getBenefits as benefits, calculateBonus as bonus, reimbursementEligibility as reimbursement};
+
+          export default Employee;
+        </code>
+      </pre>
+      <p>workAround.js</p>
+      <pre>
+        <code>
+          import {cadre, tax, benefits, bonus, reimbursement} from './employee';
+          import Employee from './employee';
+
+          function getEmployeeInformation(inputSalary) {
+            Employee.salary = inputSalary;
+            console.log('Cadre: ' + cadre());
+            console.log('Tax: ' + tax());
+            console.log('Benefits: ' + benefits());
+            console.log('Bonus: ' + bonus());
+            console.log('Reimbursement Eligibility: ' + reimbursement() + '\n');
+          }
+
+          getEmployeeInformation(10000);
+          getEmployeeInformation(50000);
+          getEmployeeInformation(100000);
+        </code>
+      </pre>
+    </aside>
+  </article>
 </article>
 </main>
 
