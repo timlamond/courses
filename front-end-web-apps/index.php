@@ -2954,6 +2954,351 @@ include $_SERVER["DOCUMENT_ROOT"] . "/includes/header.php";
         </p>
       </section>
     </article>
+    <article class="module">
+      <h5>Components Render Other Components</h5>
+      <p>
+        Component render methods can return <em>component instances</em>.
+      </p>
+      <pre>
+        <code>
+          class OMG extends React.Component {
+            render() {
+              return <h1>Whooooa!</h1>;
+            }
+          }
+
+          class Crazy extends React.Component {
+            render() {
+              return <OMG />
+            }
+          }
+        </code>
+      </pre>
+      <p>
+        You can import components from other JavaScript files using an <code>import</code> statement.
+      </p>
+      <p>
+        We've already seen this when adding the BusinessList and SearchBar components to the main App.js in the first part of the <em>ravenous</em> project.
+      </p>
+      <p>
+        The most common way to export a component from it's component class file is via <em>named exports</em>; which is when you place <code>export</code> ahead of the <code>var</code>, <code>let</code>, <code>const</code>, <code>function</code>, or <code>class</code> that you want export.
+      </p>
+      <p>
+        These named exports are then imported into a differnt file using an import statement, with the names of what you're importing wrapped in curly braces.
+      </p>
+      <pre>
+        <code>
+          //File1.js
+          export const myName = 'Timbo';
+          export const mySkills = {
+            code: "HTML, CSS, etc",
+            sports: "Hockey, Golf, etc"
+          };
+
+          //File2.js
+          import {myName, mySkills} from './File1';
+        </code>
+      </pre>
+    </article>
+
+    <article class="module">
+      <h5>this.props</h5>
+      <p>A way for a component to pass information (properties or <em>props</em>) to another component.</p>
+      <p>
+        Every component has a <code>props</code> object, which holds information about the component. You access a components <code>props</code> using the expression <code>this.props</code>.
+      </p>
+      <p>
+        Most of the info within <code>this.props</code> is pretty useless, but some is extemely important.
+      </p>
+      <p>
+        You can pass information to a React component by giving the component attributes:
+      </p>
+      <pre>
+        <code>
+          <MyComponent foo="bar" />
+          <MyComponent message="message passed to component" />
+          <MyComponent info={["top", "left"]} />
+          <MyComponent name="Timbo" town="Hereton" age={23} living={true} />
+        </code>
+      </pre>
+      <p>
+        These attribues become the key:value pairs in the <code>this.props</code> object when the component renders.
+      </p>
+      <p>
+        You can render the information within the <code>props</code> object by calling <code>this.props.nameOfAttribute</code> within the components render method.
+      </p>
+      <p>
+        <code>return <h1>Message: {this.props.message}.</code>
+      </p>
+
+      <section>
+        <h6>Pass props from Component to Component</h6>
+        <p>
+          In order for ComponentA to pass a prop to ComponentB, ComponentA needs to render ComponentB, and vice versa.
+        </p>
+        <pre>
+          <code>
+            //Greeting.js
+            import React from 'react';
+
+            export class Greeting extends React.Component {
+              render() {
+                return <h1>Hi there, {this.props.name}!</h1>;
+              }
+            }
+
+            //App.js
+            import React from 'react';
+            import ReactDOM from 'react-dom';
+            import {Greeting} from './Greeting';
+
+            class App extends React.Component {
+              render() {
+                return (
+                  <div>
+                    <h1>
+                      Hullo and, "Welcome to The Newzz," "On Line!"
+                    </h1>
+                    <Greeting name="Bruno" />
+                    <article>
+                      Latest newzz:  where is my phone?
+                    </article>
+                  </div>
+                );
+              }
+            }
+
+            ReactDOM.render(
+              <App />,
+              document.getElementById('app')
+            );
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h6>Render Different UI Based on prop</h6>
+        <p>
+          You can also uses props within conditionals to render different content based on the values.
+        </p>
+        <pre>
+          <code>
+            export class MyClass extends React.Component {
+              render() {
+                if(this.props.name === 'Timbo'){
+                  return(
+                    <h2>It's Tim "The Tool Man" Taylor!</h2>
+                  );
+                } else {
+                  return (
+                    <h2>Oh, that's {this.props.name}.</h2>
+                  );
+                }
+              }
+            }
+          </code>
+        </pre>
+      </section>
+      <section>
+        <h6>Pass an Event Handler in a Component Class</h6>
+        <p>
+          Start by defining the event handler as a method in a component class.
+        </p>
+        <pre>
+          <code>
+            class Example extends React.Component {
+              eventHandler() {
+                console.log('event handler called');
+              }
+
+              render() {
+                return (
+                  <h1 onClick={this.eventHandler}>Click me!</h1>
+                );
+              }
+            }
+          </code>
+        </pre>
+      </section>
+      <section>
+        <h6>Pass and Receive an Event Handler as a prop</h6>
+        <p>
+          This allows you to use the event handler in another component.
+        </p>
+        <pre>
+          <code>
+            //Talker.js
+            import React from 'react';
+            import ReactDOM from 'react-dom';
+            import { Button } from './Button';
+
+            class Talker extends React.Component {
+              talk() {
+                alert("talking!");
+              }
+
+              render() {
+                return <Button talk={this.talk} />;
+                //Button component defined in a separate file; the talk method is passed to it.
+              }
+            }
+
+            ReactDOM.render(
+              <Talker />,
+              document.getElementById('app')
+            );
+
+            //Button.js
+            import React from 'react';
+
+            export class Button extends React.Component{
+              render() {
+                return (
+                  <button onClick={this.props.talk}>
+                    Click me!
+                  </button>
+                );
+              }
+            }
+          </code>
+        </pre>
+      </section>
+      <section>
+        <h6>handleEvent, onEvent, and this.props.onEvent</h6>
+        <p>
+          Standar (but not mandatory) naming conventions:
+          <ul>
+            <li>
+              Event handler should be named for the event it's litening for:
+              <li>
+                ie: if you'r listening for a "click" event, you'd name your event handler <code>handleClick</code>; "keyPress" event: <code>handleKeyPress</code>
+              </li>
+            </li>
+            <li>
+              The prop name should be the word <code>on</code>, plus the event type:
+              <li>
+                ie: click event - <code>onClick</code>; "keyPress" event - onKeyPress
+              </li>
+            </li>
+          </ul>
+        </p>
+        <pre>
+          <code>
+            //main component
+            class MyClass extends React.Component {
+              handleClick() {
+                console.log("click handled");
+              }
+
+              render() {
+                //note: this use of onClick does not define a click event, it's just the arbitrary name of an attribute, becuase it's not being called an HTML-like element, which this isn't. Here you are passing an instance of the OtherComponent component and giving it props
+                return <OtherComponent onClick={this.handleClick} />;
+              }
+            }
+            //other component
+            export MyOtherClass extends React.Component {
+              render() {
+                return (
+                  <button onClick={this.props.onClick}>
+                    Click me!
+                  </button>
+                );
+              }
+            }
+          </code>
+        </pre>
+      </section>
+      <section>
+        <h6>this.props.children</h6>
+        <p>
+          Every components <code>props</code> object has a propery named <code>children</code>.
+        </p>
+        <p>
+          <code>this.props.children</code> will pass evethying between a components opening and closing JSX tags.
+        </p>
+
+        <pre>
+          <code>
+            //App.js
+            import React from 'react';
+            import ReactDOM from 'react-dom';
+            import { List } from './List';
+
+            class App extends React.Component {
+              render() {
+                return (
+                  <div>
+                    //this instance definition does not mean that the rendered List component will necesarrily be a list with list items, you still need to define exactly what List components render (ideally, that includes an ol or ul), and the li's here are pulled into the ul/ol defined in the List component using this.props.children
+                    <List type='Living Musician'>
+                      <li>Sachiko M</li>
+                      <li>Harvey Sid Fisher</li>
+                    </List>
+                    <List type='Living Cat Musician'>
+                      <li>Nora the Piano Cat</li>
+                      <li>Nora the Piano Cat</li>
+                    </List>
+                  </div>
+                );
+              }
+            }
+
+            ReactDOM.render(
+              <App />,
+              document.getElementById('app')
+            );
+
+            //List.js
+            import React from 'react';
+
+            export class List extends React.Component {
+              render() {
+                let titleText = `Favorite ${this.props.type}`;
+                if (this.props.children instanceof Array) {
+                	titleText += 's';
+                }
+                return (
+                  <div>
+                    <h1>{titleText}</h1>
+                    <ul>{this.props.children}</ul>
+                  </div>
+                );
+              }
+            }
+          </code>
+        </pre>
+      </section>
+      <section>
+        <h6>defaultProps</h6>
+        <p>
+          <code>defaultProps</code> is an object that you fill out with default values for <code>props</code> in the event you call for one that doesn't get passed to it.
+        </p>
+        <pre>
+          <code>
+            class MyClass extends React.Component {
+              render() {
+                return (
+                  <button>
+                    {this.props.text}
+                  </button>
+                );
+              }
+            }
+
+            MyClass.defaultProps = {
+              text: 'howdy'
+            }
+          </code>
+        </pre>
+        <p>
+          Therefore is somewhere there is an instance of <code>MyClasss</code> like this:
+          <code><MyClass /></code>, the button MyClass renders will say 'howdy', rather than being blank.
+        </p>
+        <p>
+          Otherwise, if the prop is passed, that value will be used:
+          <code><MyClass text='what you say?' /></code>
+        </p>
+      </section>
+    </article>
   </article>
 </main>
 
