@@ -468,7 +468,7 @@ include $_SERVER["DOCUMENT_ROOT"] . "/includes/header.php";
             const people = ['James', 'Lars', 'Kirk', 'Robert', 'Jason', 'Cliff'];
 
             const peopleList = people.map((person, i) =>
-              <li key={'person_' + i}>{person}</li> 
+              <li key={'person_' + i}>{person}</li>
             );
           </code>
         </pre>
@@ -1655,6 +1655,192 @@ include $_SERVER["DOCUMENT_ROOT"] . "/includes/header.php";
       </ul>
     </article>
 
+    <article class="module">
+      <h5>Requests</h5>
+
+      <section>
+        <h6>Simple XHR GET Request</h6>
+        <pre>
+          <code>
+            const xhr = new XMLHttpRequest();
+            const url = 'http://api-to-call.com/endpoint';
+
+            xhr.responseType = 'json';
+            xhr.onreadystatechange = () => {
+              if(xhr.readyState === XMLHttpRequest.DONE){
+                return xhr.response;
+              }
+            }
+
+            xhr.open('GET', url);
+            xhr.send();
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h6>Simple XHR POST Request</h6>
+        <pre>
+          <code>
+            const xhr = new XMLHttpRequest();
+            const url = 'https://api-to-call.com/endpoint';
+            const data = JSON.stringify({id: '200'});
+
+            xhr.responseType = 'json';
+            xhr.onreadystatechange = () => {
+              if(xhr.readyState === XMLHttpRequest.DONE){
+                return xhr.response;
+              }
+            }
+
+            xhr.open('POST', url);
+            xhr.send(data);
+          </code>
+        </pre>
+      </section>
+
+    </article>
+
+    <article class="module">
+      <h5>Requests II: New ES6 stuff!</h5>
+
+      <section>
+          <h6>Promises</h6>
+          <p>A promise is an object that handles asynchronous data. A promise has three states</p>
+          <ol>
+            <li>
+              <em>pending</em>: when a promise is created or waiting for data
+            </li>
+            <li>
+              <em>fulfilled</em>: (success) the asynchronous operation was handled successfully
+            </li>
+            <li>
+              <em>rejected</em>: (fail) the asynchronous operation was unsuccessful
+            </li>
+          </ol>
+      </section>
+
+      <section>
+        <h6>fetch() GET Requests</h6>
+        <p>
+          The <code>fetch()</code> function:
+          <ul>
+            <li>
+              Creates a request object containing relevent info the API needs
+            </li>
+            <li>
+              Sends that request to the API enpoint provided
+            </li>
+            <li>
+              Returns a promise that ultimately resolves to a response object containing the status of the promise with the information the API send back.
+            </li>
+          </ul>
+        </p>
+        <pre>
+          <code>
+            fetch('https://api-to-call.com/endpoint').then(response => {
+              if(response.ok){
+                //there are no errors, handle response
+                return response.json();
+              }
+              //there are errors
+              throw new Error('Request failed!');
+            }, networkError => {
+              console.log(networkError.message);
+            }).then(jsonResponse => {
+              return jsonResponse;
+            });
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h6>fetch() POST Requests</h6>
+        <pre>
+          <code>
+            fetch('https://api-to-call.com/endpoint', {
+              method: 'POST',
+              body: JSON.stringify({id: '200'})
+            }).then(response => {
+              if(response.ok){
+                //handle response
+                return response.json();
+              }
+              throw new Error('Request failed!');
+            }, networkError => {
+              console.log(networkError.message);
+            }).then(jsonResponse => {
+              return jsonResponse;
+            });
+          </code>
+        </pre>
+      </section>
+    </article>
+
+    <article class="module">
+      <h5>Making it Easier with ES8!</h5>
+
+      <section>
+        <h6>async GET Requests</h6>
+        <p>
+          Key information:
+          <ul>
+            <li>
+              Using an <code>async</code> function will return a promise
+            </li>
+            <li>
+              <code>await</code> can only be used in an <code>async</code> function. <code>await</code> allows a program to run while waiting for a promise to resolve.
+            </li>
+            <li>
+              In a <code>try...catch</code> statement, code in the <code>try</code> block will be run. In the event of an exception/error, the code in the <code>catch</code> will run.
+            </li>
+          </ul>
+        </p>
+        <pre>
+          <code>
+            //async/await GET boilerplate
+            const getData = async () => {
+            try {
+          		const response = await fetch('https://api-to-call.com/endpoint');
+              if(response.ok){
+                const jsonResponse = await response.json();
+                //handle response
+                return jsonResponse;
+              }
+              throw new Error('Request failed!');
+            }
+            catch(error){
+              console.log(error);
+            }
+          };
+          </code>
+        </pre>
+
+        <pre>
+          <code>
+            //async/await POST boilerplate
+            const getData = async() => {
+              try{
+                const response = await fetch('https://api-to-call.com/endpoint', {
+                  method: 'POST',
+                  body: JSON.stringify({id: 200})
+                });
+
+                if(response.ok){
+                  const jsonResponse = await response.json();
+                  //handle result
+                  return jsonResponse;
+                }
+                throw new Error('Request failed!');
+              }
+              catch(error){
+                console.log(error);
+              }
+            }
+          </code>
+        </pre>
+      </section>
+    </article>
   </article>
 </main>
 
