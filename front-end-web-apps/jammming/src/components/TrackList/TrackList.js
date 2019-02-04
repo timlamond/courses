@@ -12,11 +12,20 @@ class TrackList extends React.Component {
   }
 
   render() {
-    return (
-      <div className="TrackList">
-        <Track />
-      </div>
-    );
+    if(this.props.tracks){
+      const addedToPlaylist = (this.props.savedToPlaylist) ? true : false;
+      return (
+        <div className="TrackList">
+          {this.props.tracks.map((track) => {
+            return <Track track={track} key={track.id} updatePlaylist={this.props.updatePlaylist} addedToPlaylist={addedToPlaylist} />
+          })}
+        </div>
+      );
+    } else{
+      return (
+        <div className="TrackList"></div>
+      )
+    }
   }
 }
 

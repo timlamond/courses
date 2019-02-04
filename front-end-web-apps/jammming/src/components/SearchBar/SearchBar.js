@@ -25,13 +25,15 @@ class SearchBar extends React.Component {
   }
 
   handleSearch(event){
-    this.props.searchSpotify(this.state);
+    //console.log(this.props.accessToken);
+    this.props.searchSpotify(this.state.term, this.props.accessToken);
     event.preventDefault();
   }
 
   renderSearchButton(){
-    console.log("has AccessToken: " + this.props.hasAccessToken);
-    if(this.props.hasAccessToken){
+    //console.log("has AccessToken: " + this.props.hasAccessToken);
+    let accessTokenLength = this.props.accessToken.length;
+    if(accessTokenLength > 0){
       return(
         <a onClick={this.handleSearch}>SEARCH</a>
       );
@@ -40,7 +42,6 @@ class SearchBar extends React.Component {
         <a href={this.props.authURI}>SEARCH</a>
       );
     }
-
   }
 
   render(){

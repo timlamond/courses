@@ -11,11 +11,16 @@ class SearchResults extends React.Component {
     super(props);
   }
 
+  // logTracks(tracks){
+  //   console.log(tracks);
+  // }
+
   render (){
+    //this.logTracks(this.props.tracks);
     return (
       <div className="SearchResults">
         <h2>Results</h2>
-        <TrackList />
+        <TrackList tracks={this.props.tracks} updatePlaylist={this.props.updatePlaylist} savedToPlaylist={false} />
       </div>
     );
   }
