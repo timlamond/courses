@@ -5,50 +5,45 @@ import './Track.css';
 
 //define Track component
 class Track extends React.Component {
+  //define costrutor object
   constructor(props){
     super(props);
 
-    // this.state = {
-    //   addedToPlaylist: this.props.addedToPlaylist
-    // }
-
+    //re-bind context of this to methods as required
     this.handleClick = this.handleClick.bind(this);
   }
 
+  //define method to handle clicks on the Tracks add/remove button
   handleClick(event){
-    console.log('props', this.props);
-    //console.log('initState', this.state);
+    //if the Track being clicked is in the SearchResults
     if(!this.props.addedToPlaylist){
+      //trigger App component's updatePlaylist method to add the track to the playlist, passing the track info and the action 'add'
       this.props.updatePlaylist(this.props.track, "add");
-      // this.setState({
-      //   addedToPlaylist: true
-      // }, () => {
-      //   console.log('setState', this.state);
-      // });
-
     } else {
+      //otherwise trigger App component's updatePlaylist method to remove the track from the playlist, passing the track info and the action 'remove'
       this.props.updatePlaylist(this.props.track, "remove");
-      // this.setState({
-      //   addedToPlaylist: false
-      // }, () => {
-      //   console.log('setState', this.state);
-      // });
     }
+    //prevent the link's default behaviour
     event.preventDefault();
   }
 
+  //define method to render the Track's add/subtract button
   renderTrackIcon(){
+    //if the Track is displayed in the playlist
     if(this.props.addedToPlaylist){
+      // render the button with a subtract icon
       return (
           <a className="Track-action" onClick={this.handleClick}>-</a>
       );
     } else {
+      //otherwise, render the button with an add icon
       return(
           <a className="Track-action" onClick={this.handleClick}>+</a>
       )
     }
   }
 
+  //render the component
   render(){
     return(
       <div className="Track">
@@ -62,5 +57,5 @@ class Track extends React.Component {
   }
 }
 
-//export component
+//export the Track component
 export default Track;

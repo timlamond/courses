@@ -5,18 +5,15 @@ import './SearchResults.css';
 //import TrackList
 import TrackList from '../TrackList/TrackList';
 
-//define components
+//define the SearchResults component
 class SearchResults extends React.Component {
+  //define the constructor object
   constructor(props){
     super(props);
   }
 
-  // logTracks(tracks){
-  //   console.log(tracks);
-  // }
-
+  //render the component
   render (){
-    //this.logTracks(this.props.tracks);
     return (
       <div className="SearchResults">
         <h2>Results</h2>
@@ -26,5 +23,5 @@ class SearchResults extends React.Component {
   }
 }
 
-//export components
+//export SearchResults component
 export default SearchResults;
